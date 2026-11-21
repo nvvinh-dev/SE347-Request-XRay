@@ -66,7 +66,7 @@ Tài khoản demo (nằm trong `appsettings.json`): `admin` / `admin123` (vai tr
 Bản đầy đủ có lời nói, thao tác từng bước, phân bổ thời gian và cách xử lý sự cố: [KICH-BAN-DEMO.md](KICH-BAN-DEMO.md).
 Dưới đây là bản tóm tắt.
 
-Thay cho slide 20. Đặt tốc độ **Vừa**, phóng to trình duyệt 125% nếu máy chiếu mờ.
+Đi kèm slide 20 (lộ trình 8 bước) và slide 21 (link sản phẩm). Đặt tốc độ **Vừa**; phóng to trình duyệt theo giới hạn ghi trong kịch bản để sơ đồ và bảng Phá thử vẫn nằm trọn một màn hình.
 
 1. **Mở đầu, nhắc lại slide 2.** Ở trang X-Ray, bấm nút "Đường đi chuẩn" (con chuột không dây). Gói tin đi hết 6 trạm, quay về
    `200 OK`. Chỉ vào các số ms: "toàn bộ hành trình chưa tới 1 mili giây ở server". Bấm từng trạm để soi

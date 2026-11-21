@@ -136,7 +136,7 @@ export default function XRayPage() {
         <section className="panel p-4 sm:p-5">
           <div className="mb-1 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="panel-title">Hành trình của một HTTP Request · slide 9</div>
+              <div className="panel-title">Hành trình của một HTTP Request</div>
               <h1 className="mt-0.5 text-xl font-extrabold tracking-tight">
                 {trace ? (
                   <>

@@ -1,7 +1,7 @@
 # Kịch bản demo Request X-Ray
 
-Thời lượng: khoảng 6 phút 30, thay cho slide 20. Bắt đầu ngay sau slide 19 ("Chuyển giao sân khấu"), kết thúc
-bằng việc quay lại slide 21.
+Thời lượng: khoảng 6 phút 30. Chiếu slide 20 (lộ trình 8 bước) khoảng 15 giây rồi chuyển sang trình duyệt;
+demo xong thì quay lại PowerPoint, chiếu slide 21 (link sản phẩm, mã QR) rồi sang slide 22 để đúc kết.
 
 Cách đọc: mỗi bước có **Thao tác** (người bấm làm gì), **Lời nói** (đọc gần nguyên văn được) và **Màn hình**
 (khán giả sẽ thấy gì, để người nói chỉ vào đúng chỗ). Nên chia hai vai: một người nói, một người bấm. Nếu
@@ -39,7 +39,13 @@ một người làm cả hai thì bấm trước, nói trong lúc gói tin đang
 
 ## 1. Mở màn: trả lời câu hỏi ở slide 2 (khoảng 1 phút 30)
 
-**Thao tác:** Chuyển từ slide 19 sang trình duyệt, tab X-Ray Pipeline. Để yên 2 giây cho khán giả nhìn cả màn hình.
+**Thao tác:** Ở slide 20, chỉ nhanh vào 8 ô bước.
+
+**Lời nói:**
+> "Phần demo sẽ đi đúng 8 bước trên slide này: một đường đi chuẩn, sáu cách làm request gãy ở những trạm khác
+> nhau, và cuối cùng là mời cả lớp cùng làm client."
+
+**Thao tác:** Chuyển sang trình duyệt, tab X-Ray Pipeline. Để yên 2 giây cho khán giả nhìn cả màn hình.
 
 **Lời nói:**
 > "Ở slide 2 nhóm em đã hỏi: sau một cú click mua hàng thì chuyện gì xảy ra ở server? Lý thuyết đã có rồi,
@@ -174,7 +180,12 @@ mờ "không chạm tới". Về Client: `401 Unauthorized`.
 
 *Nếu không ai vào được trong 30 giây:* "Mạng phòng học hơi khó tính, nhóm xin dừng phần này", rồi qua bước kết.
 
-**Thao tác:** Quay lại slide 21.
+**Thao tác:** Quay lại PowerPoint, chiếu slide 21 (link sản phẩm demo).
+
+**Lời nói:**
+> "Toàn bộ mã nguồn, hướng dẫn chạy và kịch bản demo nằm ở repo này, mọi người quét mã QR là mở được."
+
+**Thao tác:** Sang slide 22.
 
 **Lời nói (chuyển sang đúc kết):**
 > "Vậy là chúng ta đã nhìn tận mắt ba thông điệp của bài: framework gọi code của mình, request đi qua một
@@ -202,7 +213,7 @@ khoảng 1 phút 15.
 |---|---|
 | Thanh trên cùng báo "Mất kết nối backend" | Kiểm tra Terminal 1 còn chạy không, chạy lại `dotnet run`, tải lại trang |
 | Gói tin không chạy, chỉ có kết quả | Tải lại trang (F5); vẫn lỗi thì dùng Swagger ở `localhost:5000/swagger` |
-| Điện thoại không vào được | Bỏ bước 3, nói một câu rồi chuyển slide 21 |
+| Điện thoại không vào được | Bỏ bước 3, nói một câu rồi chuyển sang slide 21 |
 | Máy treo hẳn | Chiếu video quay sẵn |
 
 ### Câu hỏi khán giả hay gặp

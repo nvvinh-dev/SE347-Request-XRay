@@ -60,7 +60,7 @@ export default function LivePage() {
       <main className="mx-auto grid max-w-[1600px] gap-5 px-4 py-6 sm:px-6 xl:grid-cols-[380px_1fr]">
         <aside className="space-y-5">
           <section className="panel p-6 text-center">
-            <div className="panel-title">Một backend · nhiều client · slide 7</div>
+            <div className="panel-title">Một backend · nhiều client</div>
             <h1 className="mt-2 text-2xl font-extrabold">Quét để mua hàng</h1>
             <div className="mx-auto mt-5 w-fit rounded-3xl bg-white p-4 shadow-[0_0_60px_-10px_rgba(34,211,238,0.6)]">
               {url ? <QRCodeSVG value={url} size={240} level="M" /> : <div className="h-[240px] w-[240px] animate-pulse bg-slate-200" />}

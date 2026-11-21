@@ -8,7 +8,6 @@ export interface Scenario {
   title: string;
   expect: number;
   where: string;
-  slide: string;
   method: string;
   path: string;
   identity: Identity;
@@ -18,15 +17,15 @@ export interface Scenario {
 
 // Mỗi kịch bản làm request "gãy" ở một trạm khác nhau.
 export const SCENARIOS: Scenario[] = [
-  { id: "ok", icon: "✅", title: "Đường đi chuẩn", expect: 200, where: "đi hết 6 trạm", slide: "slide 19", method: "GET", path: "/api/products/1", identity: "anonymous" },
-  { id: "401", icon: "🔒", title: "Chưa đăng nhập mà thêm hàng", expect: 401, where: "AuthN / AuthZ", slide: "slide 17", method: "POST", path: "/api/products", identity: "anonymous", body: { name: "Hàng lậu", price: 5000, stock: 1 } },
-  { id: "403", icon: "🚫", title: "Khách đòi thêm hàng", expect: 403, where: "AuthZ", slide: "slide 17", method: "POST", path: "/api/products", identity: "khach", body: { name: "Hàng của khách", price: 5000, stock: 1 } },
-  { id: "404r", icon: "🧭", title: "Gõ sai đường dẫn", expect: 404, where: "Routing", slide: "slide 11", method: "GET", path: "/api/khong-ton-tai", identity: "anonymous" },
-  { id: "json", icon: "🧩", title: "JSON gõ hỏng", expect: 400, where: "Model Binding", slide: "slide 13", method: "POST", path: "/api/products", identity: "admin", rawBody: '{ "name": "Loa", "price": ' },
-  { id: "400", icon: "🧾", title: "Tên trống, giá 0đ", expect: 400, where: "Validation", slide: "slide 13", method: "POST", path: "/api/products", identity: "admin", body: { name: "", price: 0, stock: 1 } },
-  { id: "404s", icon: "🔎", title: "Sản phẩm số 999", expect: 404, where: "Service", slide: "slide 8", method: "GET", path: "/api/products/999", identity: "anonymous" },
-  { id: "409", icon: "♻️", title: "Thêm trùng tên", expect: 409, where: "Service (nghiệp vụ)", slide: "slide 13", method: "POST", path: "/api/products", identity: "admin", body: { name: "Chuột không dây", price: 250000, stock: 5 } },
-  { id: "500", icon: "💥", title: "Kho hàng sập", expect: 500, where: "Exception Middleware", slide: "slide 19", method: "GET", path: "/api/products/crash", identity: "anonymous" },
+  { id: "ok", icon: "✅", title: "Đường đi chuẩn", expect: 200, where: "đi hết 6 trạm", method: "GET", path: "/api/products/1", identity: "anonymous" },
+  { id: "401", icon: "🔒", title: "Chưa đăng nhập mà thêm hàng", expect: 401, where: "AuthN / AuthZ", method: "POST", path: "/api/products", identity: "anonymous", body: { name: "Hàng lậu", price: 5000, stock: 1 } },
+  { id: "403", icon: "🚫", title: "Khách đòi thêm hàng", expect: 403, where: "AuthZ", method: "POST", path: "/api/products", identity: "khach", body: { name: "Hàng của khách", price: 5000, stock: 1 } },
+  { id: "404r", icon: "🧭", title: "Gõ sai đường dẫn", expect: 404, where: "Routing", method: "GET", path: "/api/khong-ton-tai", identity: "anonymous" },
+  { id: "json", icon: "🧩", title: "JSON gõ hỏng", expect: 400, where: "Model Binding", method: "POST", path: "/api/products", identity: "admin", rawBody: '{ "name": "Loa", "price": ' },
+  { id: "400", icon: "🧾", title: "Tên trống, giá 0đ", expect: 400, where: "Validation", method: "POST", path: "/api/products", identity: "admin", body: { name: "", price: 0, stock: 1 } },
+  { id: "404s", icon: "🔎", title: "Sản phẩm số 999", expect: 404, where: "Service", method: "GET", path: "/api/products/999", identity: "anonymous" },
+  { id: "409", icon: "♻️", title: "Thêm trùng tên", expect: 409, where: "Service (nghiệp vụ)", method: "POST", path: "/api/products", identity: "admin", body: { name: "Chuột không dây", price: 250000, stock: 5 } },
+  { id: "500", icon: "💥", title: "Kho hàng sập", expect: 500, where: "Exception Middleware", method: "GET", path: "/api/products/crash", identity: "anonymous" },
 ];
 
 const badge = (code: number) =>

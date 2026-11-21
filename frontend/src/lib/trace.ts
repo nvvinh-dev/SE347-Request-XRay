@@ -28,18 +28,17 @@ export interface StationMeta {
   label: string;
   sub: string;
   icon: string;
-  slide: string;
 }
 
-// Nút 0 là Client, 6 nút sau là các chặng trong server (slide 9).
+// Nút 0 là Client, 6 nút sau là các chặng trong server (Kestrel → Service).
 export const NODES: StationMeta[] = [
-  { key: "client", label: "Client", sub: "Trình duyệt", icon: "💻", slide: "slide 2" },
-  { key: "kestrel", label: "Kestrel", sub: "Web server", icon: "📡", slide: "slide 9" },
-  { key: "middleware", label: "Middleware", sub: "Log · Exception", icon: "🚪", slide: "slide 10" },
-  { key: "routing", label: "Routing", sub: "Method + URL", icon: "🧭", slide: "slide 11" },
-  { key: "auth", label: "AuthN / AuthZ", sub: "Là ai · được gì", icon: "🛡️", slide: "slide 17" },
-  { key: "controller", label: "Controller", sub: "Binding · Validation", icon: "🎛️", slide: "slide 12–13" },
-  { key: "service", label: "Service", sub: "Nghiệp vụ · DI", icon: "⚙️", slide: "slide 14–15" },
+  { key: "client", label: "Client", sub: "Trình duyệt", icon: "💻" },
+  { key: "kestrel", label: "Kestrel", sub: "Web server", icon: "📡" },
+  { key: "middleware", label: "Middleware", sub: "Log · Exception", icon: "🚪" },
+  { key: "routing", label: "Routing", sub: "Method + URL", icon: "🧭" },
+  { key: "auth", label: "AuthN / AuthZ", sub: "Là ai · được gì", icon: "🛡️" },
+  { key: "controller", label: "Controller", sub: "Binding · Validation", icon: "🎛️" },
+  { key: "service", label: "Service", sub: "Nghiệp vụ · DI", icon: "⚙️" },
 ];
 
 export const nodeIndex = (key: StationKey) => NODES.findIndex((n) => n.key === key);
