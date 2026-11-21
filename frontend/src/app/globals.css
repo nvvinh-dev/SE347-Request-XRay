@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* Bảng màu "phim X-quang": nền đêm, ống dẫn phát sáng.
+   Cyan = chiều đi (request), hổ phách = chiều về (response). */
+:root {
+  --bg: #060a13;
+  --panel: #0b1220;
+  --panel-2: #0f192c;
+  --line: #1b2942;
+  --line-strong: #29406a;
+  --ink: #e6edf8;
+  --muted: #8193b2;
+  --req: #22d3ee;
+  --res: #fbbf24;
+  --ok: #34d399;
+  --block: #fb7185;
+  --err: #f43f5e;
+  --info: #a78bfa;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-req: var(--req);
+  --color-res: var(--res);
+  --color-ok: var(--ok);
+  --color-block: var(--block);
+  --color-err: var(--err);
+  --color-info: var(--info);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(1200px 600px at 15% -10%, rgba(34, 211, 238, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(167, 139, 250, 0.07), transparent 60%),
+    linear-gradient(rgba(41, 64, 106, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 64, 106, 0.16) 1px, transparent 1px);
+  background-size: auto, auto, 32px 32px, 32px 32px;
+  background-attachment: fixed;
+  color: var(--ink);
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(15, 25, 44, 0.92), rgba(11, 18, 32, 0.92));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 20px 50px -30px rgba(0, 0, 0, 0.8);
+}
+
+.panel-title {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(3, 6, 12, 0.7);
+  padding: 7px 10px;
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input:focus { border-color: var(--req); }
+
+.glow-req { box-shadow: 0 0 0 2px var(--req), 0 0 28px 4px rgba(34, 211, 238, 0.55); }
+.glow-res { box-shadow: 0 0 0 2px var(--res), 0 0 28px 4px rgba(251, 191, 36, 0.5); }
+.glow-ok { box-shadow: 0 0 0 1.5px var(--ok), 0 0 22px 0 rgba(52, 211, 153, 0.35); }
+.glow-block { box-shadow: 0 0 0 2px var(--block), 0 0 30px 4px rgba(251, 113, 133, 0.55); }
+.glow-err { box-shadow: 0 0 0 2px var(--err), 0 0 34px 6px rgba(244, 63, 94, 0.6); }
+
+@keyframes flow {
+  to { background-position: 40px 0; }
+}
+.track {
+  background-image: repeating-linear-gradient(90deg, currentColor 0 10px, transparent 10px 20px);
+  background-size: 40px 2px;
+  animation: flow 1.2s linear infinite;
+  opacity: 0.35;
+}
+.track-rev { animation-direction: reverse; }
+
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.pop { animation: pop 0.35s ease-out both; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+.shake { animation: shake 0.45s ease-in-out; }
+
+@keyframes blink {
+  50% { opacity: 0.25; }
+}
+.blink { animation: blink 1.2s ease-in-out infinite; }
+
+.scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .track, .blink { animation: none; }
+}
+

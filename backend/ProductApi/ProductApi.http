@@ -1,0 +1,54 @@
+# Phương án dự phòng khi giao diện gặp sự cố: mở file này trong VS Code (REST Client)
+# hoặc Visual Studio, bấm "Send Request" từng mục.
+@base = http://localhost:5000
+
+### 1. Đường đi chuẩn → 200
+GET {{base}}/api/products/1
+
+### 2. Sản phẩm không tồn tại → 404 tại Service
+GET {{base}}/api/products/999
+
+### 3. Sai đường dẫn → 404 tại Routing
+GET {{base}}/api/khong-ton-tai
+
+### 4. Chưa đăng nhập mà thêm hàng → 401
+POST {{base}}/api/products
+Content-Type: application/json
+
+{ "name": "Hàng lậu", "price": 5000, "stock": 1 }
+
+### 5. Đăng nhập admin (chép token vào biến @token bên dưới)
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{ "username": "admin", "password": "admin123" }
+
+###
+@token = dan-token-vao-day
+
+### 6. Dữ liệu sai → 400 (Validation chặn, Controller không bị gọi)
+POST {{base}}/api/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "", "price": 0, "stock": 1 }
+
+### 7. Trùng tên → 409 (Service chặn)
+POST {{base}}/api/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Chuột không dây", "price": 250000, "stock": 1 }
+
+### 8. Hợp lệ → 201 Created
+POST {{base}}/api/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "name": "Tai nghe gaming", "price": 550000, "stock": 10, "icon": "🎮" }
+
+### 9. Sự cố → 500 (Exception Middleware)
+GET {{base}}/api/products/crash
+
+### 10. Trace gần nhất
+GET {{base}}/api/traces?take=5

@@ -1,0 +1,11 @@
+bin/
+obj/
+data/
+node_modules/
+.next/
+*.user
+.vs/
+*.tsbuildinfo
+.env*
+frontend/AGENTS.md
+frontend/CLAUDE.md
