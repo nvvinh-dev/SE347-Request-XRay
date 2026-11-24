@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
+import { HttpTransportType, HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
 import { apiBase } from "./api";
 import type { Product } from "./api";
 import type { TraceDto } from "./trace";
@@ -25,7 +25,8 @@ export function useTraceHub(onTrace: (t: TraceDto) => void, onProducts?: (p: Pro
   useEffect(() => {
     let disposed = false;
     const conn: HubConnection = new HubConnectionBuilder()
-      .withUrl(`${apiBase()}/hubs/trace`)
+      // Bỏ Server-Sent Events: quick tunnel của Cloudflare không hỗ trợ; còn WebSocket, lỗi thì long polling.
+      .withUrl(`${apiBase()}/hubs/trace`, { transport: HttpTransportType.WebSockets | HttpTransportType.LongPolling })
       .withAutomaticReconnect([0, 1000, 2000, 5000, 5000, 10000])
       .configureLogging(LogLevel.None)
       .build();

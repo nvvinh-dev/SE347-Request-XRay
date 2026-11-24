@@ -11,14 +11,14 @@ frontend vẽ thành gói tin chạy qua các trạm, khớp sơ đồ 7 chặng
 
 ## Chạy
 
-Cần .NET SDK 10 và Node.js 20 trở lên. Mở hai cửa sổ terminal.
+Cần .NET SDK 10 và Node.js 20 trở lên.
+
+### Khi phát triển (hai server)
 
 ```powershell
 cd backend/ProductApi
 dotnet run
 ```
-
-Backend lắng nghe `http://0.0.0.0:5000`; Swagger UI ở `http://localhost:5000/swagger`.
 
 ```powershell
 cd frontend
@@ -26,29 +26,67 @@ npm install
 npm run dev -- -p 3001
 ```
 
-Mở `http://localhost:3001`. Cổng 3001 để khỏi đụng project khác đang chạy ở 3000; muốn dùng cổng khác thì
-đổi số trong lệnh, mã QR tự theo cổng của trang.
+Mở `http://localhost:3001`. Backend lắng nghe `http://0.0.0.0:5000`, Swagger UI ở `http://localhost:5000/swagger`.
+Cổng 3001 để khỏi đụng project khác đang chạy ở 3000.
 
-**Hôm thuyết trình** nên chạy bản build cho mượt và ổn định hơn:
+### Khi thuyết trình (một địa chỉ duy nhất)
+
+Xuất frontend thành file tĩnh và để ASP.NET Core tự phục vụ bằng Static Files middleware: trang web, API và
+SignalR cùng nằm ở `http://localhost:5000`, không cần chạy server Next.js.
 
 ```powershell
 cd frontend
-npm run build
-npm run start -- -p 3001
+npm install
+npm run build:static
 ```
 
-### Cho điện thoại khán giả vào được
+```powershell
+cd backend/ProductApi
+dotnet run
+```
 
-1. Laptop và điện thoại chung một Wi-Fi (hoặc bật hotspot từ điện thoại của nhóm cho laptop bắt).
-   Wi-Fi trường thường chặn các máy nhìn thấy nhau, nên chuẩn bị hotspot.
-2. Lần đầu chạy, Windows hỏi tường lửa cho `dotnet` và `node`: chọn cho phép cả **Private network**.
-   Nếu lỡ bấm hủy, chạy PowerShell quyền Administrator:
+Mở `http://localhost:5000`. Sửa frontend thì chạy lại `npm run build:static` rồi tải lại trang (không cần
+restart backend). Thư mục `backend/ProductApi/wwwroot` do lệnh này sinh ra, không đưa lên git.
+
+### Cho cả lớp vào bằng 4G hoặc Wi-Fi riêng: Cloudflare Tunnel
+
+Quick tunnel của Cloudflare miễn phí, không cần tài khoản: nó cấp một địa chỉ `https://….trycloudflare.com`
+trỏ về `localhost:5000`, khán giả vào bằng mạng của chính họ, không cần chung Wi-Fi với laptop.
+
+1. Cài `cloudflared` (một lần):
+
+   ```powershell
+   winget install --id Cloudflare.cloudflared
+   ```
+
+2. Chạy backend ở chế độ thuyết trình như trên, rồi mở thêm một terminal:
+
+   ```powershell
+   cloudflared tunnel --url http://localhost:5000
+   ```
+
+   Chờ dòng có địa chỉ `https://<tên-ngẫu-nhiên>.trycloudflare.com` (mỗi lần chạy ra một địa chỉ khác).
+
+3. Trên laptop, mở **chính địa chỉ đó** thêm `/live`, ví dụ `https://abc-xyz.trycloudflare.com/live`. Mã QR
+   tự trỏ tới `https://abc-xyz.trycloudflare.com/shop`. Nếu mở bằng `localhost`, mã QR sẽ dùng IP LAN.
+
+Laptop cần có internet (có thể bắt 4G từ điện thoại). Mỗi lượt mua chỉ vài KB. Quick tunnel dành cho thử
+nghiệm và giới hạn số request xử lý cùng lúc (khoảng 200), dư cho một lớp học. SignalR dùng WebSocket qua
+tunnel; nếu không được thì tự chuyển sang long polling.
+
+### Cho điện thoại vào qua mạng LAN (không dùng tunnel)
+
+1. Laptop và điện thoại chung một Wi-Fi hoặc hotspot. Wi-Fi trường thường chặn các máy nhìn thấy nhau.
+   Hotspot điện thoại thường chỉ cho khoảng 5–10 máy kết nối.
+2. Windows thường xếp mạng mới vào loại **Public**: vào Settings → Network, đặt mạng đó là **Private network**.
+   Lần đầu chạy, Windows hỏi tường lửa cho `dotnet`: cho phép mạng Private. Nếu lỡ bấm hủy, chạy PowerShell
+   quyền Administrator:
 
    ```powershell
    New-NetFirewallRule -DisplayName "XRay demo" -Direction Inbound -Protocol TCP -LocalPort 5000,3001 -Action Allow -Profile Private
    ```
 
-3. Mở trang **Đa client (QR)** trên máy chiếu. Trang tự lấy IP LAN của laptop để tạo mã QR trỏ tới `/shop`.
+3. Mở `http://localhost:5000/live` trên máy chiếu. Trang tự lấy IP LAN của laptop để tạo mã QR trỏ tới `/shop`.
 
 ## Các màn hình
 

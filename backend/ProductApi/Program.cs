@@ -51,6 +51,10 @@ var app = builder.Build();
 
 // ───────────── 3. PIPELINE: thứ tự ở đây chính là thứ tự request đi qua ─────────────
 app.UseCors("Demo");
+// Static Files (slide 10): phục vụ frontend xuất tĩnh trong wwwroot (npm run build:static),
+// nên trang web, API và SignalR chung một địa chỉ. Đứng trước Logging để file tĩnh không làm nhiễu log.
+app.UseDefaultFiles();                       // "/" → index.html, "/live" → "/live/" → live/index.html
+app.UseStaticFiles();
 app.UseMiddleware<TraceMiddleware>();        // Logging --> / <-- và gom trace
 app.UseMiddleware<ExceptionMiddleware>();    // đón exception → 500
 app.UseStatusCodePages(async ctx =>          // 401/403/404 rỗng → có message JSON

@@ -23,6 +23,8 @@ export default function LivePage() {
   const [lan, setLan] = useState<string[]>([]);
   const [host, setHost] = useState<string | null>(null);
   const [port, setPort] = useState("3000");
+  // Mở trang này bằng địa chỉ tunnel (hoặc IP LAN) thì mã QR dùng luôn địa chỉ đó.
+  const [publicOrigin, setPublicOrigin] = useState<string | null>(null);
 
   const onTrace = useCallback((t: TraceDto) => {
     setRuns((r) => (r.length >= MAX_PACKETS ? r : [...r, { key: t.id, trace: t }]));
@@ -34,6 +36,7 @@ export default function LivePage() {
 
   useEffect(() => {
     setPort(window.location.port || "80");
+    if (!["localhost", "127.0.0.1"].includes(window.location.hostname)) setPublicOrigin(window.location.origin);
     call<{ lanAddresses: string[] }>("GET", "/api/system/info", { clientName: "Man chieu" })
       .then((r) => {
         const list = r.data?.lanAddresses ?? [];
@@ -60,8 +63,8 @@ export default function LivePage() {
     [orders, winner, secretNames],
   );
 
-  const url = host ? `http://${host}:${port}/shop` : "";
-  const isLocal = host === "localhost" || host === "127.0.0.1";
+  const url = publicOrigin ? `${publicOrigin}/shop` : host ? `http://${host}:${port}/shop` : "";
+  const isLocal = !publicOrigin && (host === "localhost" || host === "127.0.0.1");
 
   return (
     <>
@@ -75,7 +78,7 @@ export default function LivePage() {
               {url ? <QRCodeSVG value={url} size={220} level="M" /> : <div className="h-[220px] w-[220px] animate-pulse bg-slate-200" />}
             </div>
             <div className="mt-4 break-all font-mono text-sm font-bold text-req">{url || "Đang lấy địa chỉ LAN…"}</div>
-            {lan.length > 1 && (
+            {!publicOrigin && lan.length > 1 && (
               <select value={host ?? ""} onChange={(e) => setHost(e.target.value)} className="input mt-3 text-center font-mono">
                 {lan.map((a) => (
                   <option key={a}>{a}</option>
@@ -83,6 +86,9 @@ export default function LivePage() {
               </select>
             )}
             {isLocal && <p className="mt-3 text-xs text-block">Không tìm thấy IP LAN: điện thoại và laptop cần chung một Wi-Fi.</p>}
+            {!publicOrigin && (
+              <p className="mt-2 text-[11px] text-muted">Đang dùng IP LAN. Muốn cả lớp vào bằng 4G: mở trang này qua địa chỉ tunnel.</p>
+            )}
             <p className="mt-3 text-xs text-muted">Nhập MSSV 8 số rồi bấm Mua. Gói tin của bạn sẽ chạy trên màn hình này.</p>
           </section>
 

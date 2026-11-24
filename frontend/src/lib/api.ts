@@ -21,9 +21,13 @@ export interface Product {
   icon: string;
 }
 
-// Backend chạy cổng 5000 trên cùng máy. Dùng hostname của trang hiện tại
+// Bản xuất tĩnh do chính backend phục vụ: gọi API cùng địa chỉ với trang (localhost, IP LAN hay tunnel).
+export const SAME_ORIGIN = process.env.NEXT_PUBLIC_SAME_ORIGIN === "1";
+
+// Chế độ dev: backend chạy cổng 5000 trên cùng máy. Dùng hostname của trang hiện tại
 // để điện thoại (mở bằng IP LAN) cũng gọi đúng laptop.
 export function apiBase(): string {
+  if (SAME_ORIGIN) return "";
   const fromEnv = process.env.NEXT_PUBLIC_API_BASE_URL;
   if (fromEnv) return fromEnv.replace(/\/$/, "");
   if (typeof window === "undefined") return "http://localhost:5000";
