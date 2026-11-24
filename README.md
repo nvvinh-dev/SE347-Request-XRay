@@ -61,28 +61,7 @@ npm run start -- -p 3001
 Tài khoản demo (nằm trong `appsettings.json`): `admin` / `admin123` (vai trò Admin), `khach` / `khach123`
 (vai trò Customer). Trang chính tự đăng nhập theo nút **Danh tính** trên thanh trên cùng.
 
-## Kịch bản demo gợi ý (khoảng 6 phút)
-
-Bản đầy đủ có lời nói, thao tác từng bước, phân bổ thời gian và cách xử lý sự cố: [KICH-BAN-DEMO.md](KICH-BAN-DEMO.md).
-Dưới đây là bản tóm tắt.
-
-Đi kèm slide 20 (lộ trình 8 bước) và slide 21 (link sản phẩm). Đặt tốc độ **Vừa**; phóng to trình duyệt theo giới hạn ghi trong kịch bản để sơ đồ và bảng Phá thử vẫn nằm trọn một màn hình.
-
-1. **Mở đầu, nhắc lại slide 2.** Ở trang X-Ray, bấm nút "Đường đi chuẩn" (con chuột không dây). Gói tin đi hết 6 trạm, quay về
-   `200 OK`. Chỉ vào các số ms: "toàn bộ hành trình chưa tới 1 mili giây ở server". Bấm từng trạm để soi
-   chi tiết: Routing khớp `GET api/products/{id:int}`, Model Binding biến `"1"` thành `id = 1`.
-2. **Bảng Phá thử, lần lượt từ trên xuống.** Mỗi lần gói tin đỏ lên ở một trạm khác:
-   - 401 và 403 dừng ở AuthN/AuthZ: "chưa biết bạn là ai" khác "biết rồi nhưng không đủ quyền".
-   - 404 Routing (sai đường) khác 404 Service (đúng đường, không có sản phẩm 999).
-   - JSON hỏng (Model Binding) và tên trống (Validation) đều 400, Controller không bị gọi.
-   - Trùng tên 409: hợp lệ về dữ liệu nhưng nghiệp vụ không cho, chỉ Service biết.
-   - Kho hàng sập 500: Exception Middleware đón lỗi ở chiều về, client không thấy chi tiết exception.
-3. **Terminal phía dưới** là log thật của Logging Middleware, cùng một middleware ghi cả hai chiều.
-4. **Kết: minigame Đa client.** Chiếu mã QR, mời cả lớp nhập MSSV rồi mua hàng. Ở trang X-Ray, thêm một sản
-   phẩm chọn biểu tượng hộp Secret (tồn kho 1): mọi điện thoại thấy ngay hộp vàng ở đầu danh sách, ai mua được
-   đầu tiên là người thắng, trang Đa client hiện MSSV người thắng; người đến sau nhận 409.
-
-### Minigame hộp Secret
+## Minigame hộp Secret
 
 - Sản phẩm nào có biểu tượng 📦 (nút hộp vàng trong ô chọn biểu tượng ở form "Thêm sản phẩm") là hộp Secret.
   Chọn biểu tượng này thì form tự điền tên "Hộp Secret" và tồn kho 1, sửa lại nếu muốn.
@@ -93,13 +72,6 @@ Dưới đây là bản tóm tắt.
 - MSSV được kiểm ở cả hai phía: điện thoại khóa nút Mua khi chưa đủ 8 chữ số, backend trả 400 nếu gửi sai.
 
 Dữ liệu nằm trong RAM: muốn trả kho về ban đầu trước khi diễn thì chỉ cần restart backend.
-
-### Khi có sự cố (tối đa 30 giây rồi chuyển)
-
-- Giao diện lỗi: dùng `backend/ProductApi/ProductApi.http` hoặc Swagger UI, kết quả trace xem ở
-  `GET /api/traces?take=5`.
-- Mạng phòng học không cho điện thoại vào: bỏ phần QR, chỉ demo trên laptop.
-- Nên quay sẵn một video toàn bộ kịch bản trên.
 
 ## Code đáng mở khi thuyết trình
 
