@@ -9,7 +9,7 @@ public class Product
     public string Name { get; set; } = "";
     public decimal Price { get; set; }
     public int Stock { get; set; }
-    public string Icon { get; set; } = "📦";
+    public string Icon { get; set; } = "🛍️";
 }
 
 // Dữ liệu client gửi lên khi tạo sản phẩm (slide 13: Model Binding + Validation).
@@ -37,12 +37,13 @@ public class CreateOrderRequest
     [Range(1, 5, ErrorMessage = "Mỗi lần mua từ 1 đến 5 sản phẩm")]
     public int Quantity { get; set; } = 1;
 
-    [Required(ErrorMessage = "Hãy nhập tên người mua")]
-    [StringLength(20, ErrorMessage = "Tên tối đa 20 ký tự")]
-    public string? BuyerName { get; set; }
+    // Minigame: mỗi người mua định danh bằng MSSV, đúng 8 chữ số.
+    [Required(ErrorMessage = "Hãy nhập MSSV")]
+    [RegularExpression(@"^\d{8}$", ErrorMessage = "MSSV phải gồm đúng 8 chữ số")]
+    public string? StudentId { get; set; }
 }
 
-public record Order(Guid Id, int ProductId, string ProductName, int Quantity, string BuyerName, int StockLeft, DateTime CreatedAtUtc);
+public record Order(Guid Id, int ProductId, string ProductName, int Quantity, string StudentId, int StockLeft, DateTime CreatedAtUtc);
 
 public class LoginRequest
 {

@@ -55,7 +55,7 @@ public abstract class ProductServiceBase : IProductService
                 Name = name,
                 Price = request.Price,
                 Stock = request.Stock,
-                Icon = string.IsNullOrWhiteSpace(request.Icon) ? "📦" : request.Icon.Trim(),
+                Icon = string.IsNullOrWhiteSpace(request.Icon) ? "🛍️" : request.Icon.Trim(),
             };
             Products.Add(product);
             Persist();
@@ -75,7 +75,7 @@ public abstract class ProductServiceBase : IProductService
             p.Stock -= request.Quantity;
             Persist();
             return ServiceResult<Order>.Success(new Order(Guid.NewGuid(), p.Id, p.Name, request.Quantity,
-                request.BuyerName!.Trim(), p.Stock, DateTime.UtcNow));
+                request.StudentId!, p.Stock, DateTime.UtcNow));
         }
     }
 

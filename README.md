@@ -55,8 +55,8 @@ npm run start -- -p 3001
 | Trang | Minh họa | Slide |
 |---|---|---|
 | `/` X-Ray Pipeline | Gói tin đi qua 6 trạm, chiều về; bảng "Phá thử" 9 kịch bản ngay dưới sơ đồ; terminal log `-->` / `<--` | 8–13, 17, 19 |
-| `/live` | Mã QR, nhiều gói tin cùng lúc từ nhiều điện thoại, kho hàng Singleton dùng chung | 6, 7 |
-| `/shop` | Trang cho điện thoại: nhập tên, bấm mua, thấy request của mình đi qua những trạm nào | 7 |
+| `/live` | Mã QR, nhiều gói tin cùng lúc từ nhiều điện thoại, danh sách mọi đơn hàng theo thứ tự đến server, người thắng minigame | 6, 7 |
+| `/shop` | Trang cho điện thoại: nhập MSSV 8 số (sai hoặc thiếu thì không mua được), bấm mua, thấy request của mình đi qua những trạm nào | 7 |
 
 Tài khoản demo (nằm trong `appsettings.json`): `admin` / `admin123` (vai trò Admin), `khach` / `khach123`
 (vai trò Customer). Trang chính tự đăng nhập theo nút **Danh tính** trên thanh trên cùng.
@@ -78,8 +78,19 @@ Dưới đây là bản tóm tắt.
    - Trùng tên 409: hợp lệ về dữ liệu nhưng nghiệp vụ không cho, chỉ Service biết.
    - Kho hàng sập 500: Exception Middleware đón lỗi ở chiều về, client không thấy chi tiết exception.
 3. **Terminal phía dưới** là log thật của Logging Middleware, cùng một middleware ghi cả hai chiều.
-4. **Kết: Đa client.** Chiếu mã QR, mời cả lớp mua hàng. Gói tin từ nhiều điện thoại chạy cùng lúc; mặt
-   hàng ít tồn kho (Đèn bàn LED còn 1, Loa mini còn 3) hết rất nhanh và người mua sau nhận 409.
+4. **Kết: minigame Đa client.** Chiếu mã QR, mời cả lớp nhập MSSV rồi mua hàng. Ở trang X-Ray, thêm một sản
+   phẩm chọn biểu tượng hộp Secret (tồn kho 1): mọi điện thoại thấy ngay hộp vàng ở đầu danh sách, ai mua được
+   đầu tiên là người thắng, trang Đa client hiện MSSV người thắng; người đến sau nhận 409.
+
+### Minigame hộp Secret
+
+- Sản phẩm nào có biểu tượng 📦 (nút hộp vàng trong ô chọn biểu tượng ở form "Thêm sản phẩm") là hộp Secret.
+  Chọn biểu tượng này thì form tự điền tên "Hộp Secret" và tồn kho 1, sửa lại nếu muốn.
+- Backend phát danh sách sản phẩm qua SignalR mỗi khi thêm hàng hoặc có người mua, nên điện thoại thấy hộp
+  Secret và tồn kho mới ngay, không cần tải lại trang.
+- Người thắng là đơn mua thành công đầu tiên của hộp Secret theo thời điểm đến server. Danh sách đơn hàng giữ
+  toàn bộ đơn (đánh số #1, #2, …), tải lại trang vẫn dựng lại được từ 300 trace gần nhất.
+- MSSV được kiểm ở cả hai phía: điện thoại khóa nút Mua khi chưa đủ 8 chữ số, backend trả 400 nếu gửi sai.
 
 Dữ liệu nằm trong RAM: muốn trả kho về ban đầu trước khi diễn thì chỉ cần restart backend.
 

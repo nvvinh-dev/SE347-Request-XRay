@@ -13,6 +13,8 @@ import { NODES, type TraceDto, fetchTrace } from "@/lib/trace";
 import { useTraceHub } from "@/lib/useTraceHub";
 
 const CLIENT = "Laptop trinh chieu";
+// MSSV cố định cho người thuyết trình bấm "Mua" trên laptop.
+const PRESENTER_MSSV = "00000000";
 const SPEEDS = [
   { label: "Nhanh", ms: 280 },
   { label: "Vừa", ms: 650 },
@@ -35,7 +37,8 @@ export default function XRayPage() {
   const pushLog = useCallback((t: TraceDto) => {
     setLogs((l) => (l.some((x) => x.id === t.id) ? l : [...l.slice(-59), { id: t.id, trace: t }]));
   }, []);
-  const hub = useTraceHub(pushLog);
+  // Tồn kho cập nhật ngay khi điện thoại khán giả mua hàng.
+  const hub = useTraceHub(pushLog, setProducts);
 
   const reload = useCallback(async () => {
     try {
@@ -103,7 +106,7 @@ export default function XRayPage() {
   };
 
   const onCreate = (p: NewProduct) => send("POST", "/api/products", identity, p);
-  const onBuy = (id: number) => send("POST", "/api/orders", identity, { productId: id, quantity: 1, buyerName: "Người thuyết trình" });
+  const onBuy = (id: number) => send("POST", "/api/orders", identity, { productId: id, quantity: 1, studentId: PRESENTER_MSSV });
 
   const selectedKey = selected !== null ? NODES[selected].key : null;
 

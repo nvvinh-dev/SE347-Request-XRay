@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { formatVnd, type Identity, type Product } from "@/lib/api";
+import { SECRET_ICON, SecretBadge, SecretBox, isSecret } from "./SecretBox";
 
-const ICONS = ["🎧", "🎮", "🖥️", "🕹️", "⌚", "🔋", "🖨️", "📦"];
+const ICONS = ["🎧", "🎮", "🖥️", "🕹️", "⌚", "🔋", "🖨️", SECRET_ICON];
 const TILE = [
   "from-cyan-500/25 to-sky-700/10",
   "from-violet-500/25 to-fuchsia-700/10",
@@ -65,17 +66,26 @@ export default function ShopPanel({
       {products?.length === 0 && <p className="py-8 text-center text-sm text-muted">Kho chưa có sản phẩm nào.</p>}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {products?.map((p, i) => (
+        {products?.map((p, i) => {
+          const secret = isSecret(p);
+          return (
           <div
             key={p.id}
-            className="group relative overflow-hidden rounded-2xl border border-line bg-panel-2 transition hover:-translate-y-0.5 hover:border-req/60"
+            className={`group relative overflow-hidden rounded-2xl border transition hover:-translate-y-0.5 ${
+              secret ? "secret-card" : "border-line bg-panel-2 hover:border-req/60"
+            }`}
           >
+            {secret && <SecretBadge className="absolute left-2 top-2 z-10" />}
             <button onClick={() => onView(p.id)} disabled={busy} className="block w-full text-left disabled:cursor-wait">
-              <div className={`flex h-20 items-center justify-center bg-gradient-to-br ${TILE[i % TILE.length]} text-4xl`}>
-                <span className="transition group-hover:scale-110">{p.icon}</span>
+              <div
+                className={`flex h-20 items-center justify-center text-4xl ${
+                  secret ? "bg-[radial-gradient(circle_at_50%_60%,rgba(251,191,36,0.35),transparent_70%)]" : `bg-gradient-to-br ${TILE[i % TILE.length]}`
+                }`}
+              >
+                {secret ? <SecretBox size={58} /> : <span className="transition group-hover:scale-110">{p.icon}</span>}
               </div>
               <div className="p-3">
-                <div className="truncate text-sm font-semibold">{p.name}</div>
+                <div className={`truncate text-sm font-semibold ${secret ? "text-amber-200" : ""}`}>{p.name}</div>
                 <div className="mt-0.5 font-mono text-[13px] font-bold text-res">{formatVnd(p.price)}</div>
                 <div className="mt-1 flex items-center justify-between text-[11px] text-muted">
                   <span className={p.stock === 0 ? "text-block" : ""}>{p.stock === 0 ? "Hết hàng" : `Còn ${p.stock}`}</span>
@@ -92,7 +102,8 @@ export default function ShopPanel({
               Mua
             </button>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <form
@@ -114,13 +125,33 @@ export default function ShopPanel({
               <button
                 type="button"
                 key={ic}
-                onClick={() => setForm({ ...form, icon: ic })}
-                className={`h-9 w-9 rounded-lg text-lg transition ${form.icon === ic ? "bg-req/20 ring-1 ring-req" : "bg-panel-2 hover:bg-white/10"}`}
+                title={ic === SECRET_ICON ? "Hộp Secret cho minigame" : undefined}
+                onClick={() =>
+                  setForm(
+                    ic === SECRET_ICON
+                      ? { ...form, icon: ic, name: "Hộp Secret", stock: 1 }
+                      : { ...form, icon: ic, name: form.icon === SECRET_ICON ? "Tai nghe gaming" : form.name },
+                  )
+                }
+                className={`flex h-9 w-9 items-center justify-center rounded-lg text-lg transition ${
+                  ic === SECRET_ICON
+                    ? form.icon === ic
+                      ? "bg-amber-400/25 ring-2 ring-amber-300"
+                      : "bg-amber-400/10 ring-1 ring-amber-400/50 hover:bg-amber-400/20"
+                    : form.icon === ic
+                      ? "bg-req/20 ring-1 ring-req"
+                      : "bg-panel-2 hover:bg-white/10"
+                }`}
               >
-                {ic}
+                {ic === SECRET_ICON ? <SecretBox size={26} animated={false} /> : ic}
               </button>
             ))}
           </div>
+          {form.icon === SECRET_ICON && (
+            <p className="col-span-6 rounded-lg bg-amber-400/10 px-3 py-2 text-[12px] text-amber-200 ring-1 ring-amber-400/30">
+              Hộp Secret của minigame: điện thoại khán giả thấy ngay khi bạn bấm Gửi, ai mua được đầu tiên sẽ thắng.
+            </p>
+          )}
           <Field className="col-span-6" label="Tên">
             <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="input" />
           </Field>

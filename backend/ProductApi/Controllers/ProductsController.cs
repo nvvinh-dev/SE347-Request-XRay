@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ProductApi.Auth;
 using ProductApi.Models;
 using ProductApi.Services;
@@ -13,12 +14,14 @@ public class ProductsController : ControllerBase
 {
     private readonly IProductService _service;
     private readonly TraceRecorder _trace;
+    private readonly IHubContext<TraceHub> _hub;
 
     // Không có chữ "new" nào: DI Container "bơm" service vào qua constructor (slide 15).
-    public ProductsController(IProductService service, TraceRecorder trace)
+    public ProductsController(IProductService service, TraceRecorder trace, IHubContext<TraceHub> hub)
     {
         _service = service;
         _trace = trace;
+        _hub = hub;
     }
 
     private string Impl => _service.GetType().Name;
@@ -40,11 +43,13 @@ public class ProductsController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = Roles.Admin)]
-    public ActionResult<Product> Create(CreateProductRequest request)
+    public async Task<ActionResult<Product>> Create(CreateProductRequest request)
     {
         var result = _trace.Service($"{Impl}.Create()", () => _service.Create(request),
             r => r.Ok ? (Outcomes.Pass, $"Đã thêm id = {r.Value!.Id}") : (Outcomes.Block, $"{r.Error} → 409"));
         if (!result.Ok) return Conflict(new { message = result.Error });
+        // Điện thoại khán giả thấy ngay sản phẩm mới (minigame Secret) mà không phải tải lại trang.
+        await _hub.Clients.All.SendAsync("products", _service.GetAll());
         return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
     }
 

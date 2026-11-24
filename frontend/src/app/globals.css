@@ -124,3 +124,43 @@ body {
   .track, .blink { animation: none; }
 }
 
+
+/* ───── Hộp Secret (minigame) ───── */
+@keyframes secret-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-5px) rotate(3deg); }
+}
+.secret-float { animation: secret-float 2.4s ease-in-out infinite; }
+
+@keyframes secret-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.1) rotate(45deg); }
+}
+.secret-twinkle { animation: secret-twinkle 1.6s ease-in-out infinite; }
+
+.secret-halo {
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.55) 0%, rgba(168, 85, 247, 0.25) 45%, transparent 70%);
+  filter: blur(4px);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+/* Viền vàng – tím chạy vòng quanh thẻ sản phẩm Secret */
+@property --secret-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes secret-spin { to { --secret-angle: 360deg; } }
+.secret-card {
+  position: relative;
+  border: 2px solid transparent !important;
+  background:
+    linear-gradient(160deg, #2a1745, #3b2306) padding-box,
+    conic-gradient(from var(--secret-angle), #fbbf24, #a855f7, #f472b6, #fde68a, #fbbf24) border-box !important;
+  box-shadow: 0 0 28px -4px rgba(251, 191, 36, 0.55), 0 0 60px -20px rgba(168, 85, 247, 0.7);
+  animation: secret-spin 3.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secret-float, .secret-twinkle, .secret-halo, .secret-card { animation: none; }
+}

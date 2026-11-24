@@ -3,18 +3,24 @@
 import { useEffect, useRef, useState } from "react";
 import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
 import { apiBase } from "./api";
+import type { Product } from "./api";
 import type { TraceDto } from "./trace";
 
 export type HubStatus = "connecting" | "connected" | "reconnecting" | "offline";
 
-/** Nghe mọi trace server phát qua SignalR (/hubs/trace). */
-export function useTraceHub(onTrace: (t: TraceDto) => void): HubStatus {
+/**
+ * Nghe SignalR ở /hubs/trace: "trace" là mọi request vừa xử lý xong,
+ * "products" là danh sách sản phẩm mới sau mỗi lần thêm hàng hoặc mua hàng.
+ */
+export function useTraceHub(onTrace: (t: TraceDto) => void, onProducts?: (p: Product[]) => void): HubStatus {
   const [status, setStatus] = useState<HubStatus>("connecting");
   const handler = useRef(onTrace);
+  const productsHandler = useRef(onProducts);
 
   useEffect(() => {
     handler.current = onTrace;
-  }, [onTrace]);
+    productsHandler.current = onProducts;
+  }, [onTrace, onProducts]);
 
   useEffect(() => {
     let disposed = false;
@@ -25,6 +31,7 @@ export function useTraceHub(onTrace: (t: TraceDto) => void): HubStatus {
       .build();
 
     conn.on("trace", (t: TraceDto) => handler.current(t));
+    conn.on("products", (p: Product[]) => productsHandler.current?.(p));
     conn.onreconnecting(() => setStatus("reconnecting"));
     conn.onreconnected(() => setStatus("connected"));
     conn.onclose(() => !disposed && setStatus("offline"));

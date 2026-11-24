@@ -166,17 +166,23 @@ mờ "không chạm tới". Về Client: `401 Unauthorized`.
 **Thao tác:** Chuyển sang tab **Đa client (QR)**. Phóng to cho mã QR rõ.
 
 **Lời nói:**
-> "Slide 7 nói một backend phục vụ mọi thiết bị. Giờ mời cả lớp làm client. Mọi người kết nối Wi-Fi
-> [tên hotspot], quét mã này, nhập tên và mua một món bất kỳ. Ai nhanh tay thì mua được Đèn bàn LED, chỉ còn
-> một cái thôi."
+> "Slide 7 nói một backend phục vụ mọi thiết bị. Giờ mời cả lớp làm client và chơi một minigame nhỏ. Mọi
+> người kết nối Wi-Fi [tên hotspot], quét mã này và nhập MSSV. Trong vài giây nữa nhóm sẽ thả một hộp Secret,
+> ai mua được đầu tiên là người thắng."
 
-**Màn hình:** Bộ đếm "request đã nhận" và "client khác nhau" tăng; nhiều chấm cùng chạy trên pipeline; cột
-"Đơn hàng mới nhất" hiện tên người mua; terminal chạy log liên tục.
+**Thao tác:** Chờ khoảng 30 giây cho mọi người vào (bộ đếm "client khác nhau" tăng). Chuyển sang tab X-Ray,
+ở form "Thêm sản phẩm" bấm biểu tượng hộp vàng (form tự điền "Hộp Secret", tồn kho 1), danh tính **admin**,
+bấm **Gửi POST**. Quay lại tab Đa client.
 
-**Lời nói (khi đã có khoảng 10 đơn):**
-> "Mỗi chấm là request từ một điện thoại thật, tất cả đi chung một pipeline. Kho hàng là Singleton nên mọi
-> người cùng nhìn một kho: Đèn bàn LED đã có người mua, người tới sau nhận 409 màu đỏ, và trên điện thoại của
-> bạn cũng hiện request của mình bị chặn ở trạm Service."
+**Màn hình:** Ô minigame chuyển thành hộp Secret vàng "đã xuất hiện!"; trên điện thoại hộp vàng hiện ngay ở
+đầu danh sách. Nhiều chấm cùng chạy trên pipeline; danh sách đơn hàng đánh số theo thứ tự đến server; ô
+minigame hiện **MSSV người chiến thắng**.
+
+**Lời nói (khi đã có người thắng):**
+> "Chúc mừng MSSV [đọc số trên màn hình]! Mỗi chấm là request từ một điện thoại thật, tất cả đi chung một
+> pipeline. Kho hàng là Singleton nên mọi người cùng nhìn một kho: hộp Secret chỉ có một, ai đến sau nhận 409
+> màu đỏ, và trên điện thoại của bạn cũng hiện request bị chặn ở trạm Service. Ai nhập MSSV sai thì bị chặn
+> ngay ở Validation với 400."
 
 *Nếu không ai vào được trong 30 giây:* "Mạng phòng học hơi khó tính, nhóm xin dừng phần này", rồi qua bước kết.
 
