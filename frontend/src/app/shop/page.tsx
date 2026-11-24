@@ -130,7 +130,7 @@ export default function MobileShop() {
 
       <div className="sticky top-0 z-20 -mx-4 mt-4 bg-bg/90 px-4 pb-3 pt-2 backdrop-blur">
         <label className="block">
-          <span className="mb-1.5 block text-xs font-semibold text-muted">MSSV của bạn (hiện trên màn chiếu)</span>
+          <span className="mb-1.5 block text-xs font-semibold text-muted">MSSV của bạn</span>
           <input
             value={mssv}
             onChange={(e) => changeMssv(e.target.value)}

@@ -86,10 +86,6 @@ export default function LivePage() {
               </select>
             )}
             {isLocal && <p className="mt-3 text-xs text-block">Không tìm thấy IP LAN: điện thoại và laptop cần chung một Wi-Fi.</p>}
-            {!publicOrigin && (
-              <p className="mt-2 text-[11px] text-muted">Đang dùng IP LAN. Muốn cả lớp vào bằng 4G: mở trang này qua địa chỉ tunnel.</p>
-            )}
-            <p className="mt-3 text-xs text-muted">Nhập MSSV 8 số rồi bấm Mua. Gói tin của bạn sẽ chạy trên màn hình này.</p>
           </section>
 
           <WinnerCard secret={secretProducts} winner={winner} lateCount={lateCount} />
